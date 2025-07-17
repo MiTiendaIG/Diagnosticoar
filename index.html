@@ -137,7 +137,7 @@
       list-style: none;
       display: flex;
       justify-content: center;
-      gap: 2rem;
+      gap: 1.2rem;
       flex-wrap: wrap;
     }
     nav a {
@@ -147,6 +147,7 @@
       transition: color 0.3s;
       padding: 8px 16px;
       border-radius: 30px;
+      font-size: 0.95rem;
     }
     nav a:hover {
       color: #00bbf0;
@@ -168,7 +169,7 @@
       background-size: cover;
       color: white;
       text-align: center;
-      padding: 4rem 1rem;
+      padding: 3.5rem 1rem;
       border-radius: 10px;
       margin-bottom: 2rem;
       animation: fadeInHero 1.5s forwards ease-in-out;
@@ -182,12 +183,12 @@
       }
     }
     .hero h2 {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       margin-bottom: 1rem;
       text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     .hero p {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       max-width: 600px;
       margin: 0 auto;
     }
@@ -197,10 +198,10 @@
     /* ------------------------------------------- */
     .info-section {
       background: white;
-      padding: 2.5rem;
+      padding: 2rem;
       border-radius: 15px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-      margin: 2.5rem 0;
+      margin: 2rem 0;
       text-align: center;
       border: 1px solid #eaeaea;
     }
@@ -220,7 +221,7 @@
     .ecografia-section .ecografia-content {
       display: flex;
       flex-wrap: wrap; /* Se adaptará en pantallas pequeñas */
-      gap: 2.5rem;       /* Espacio entre columnas */
+      gap: 2rem;       /* Espacio entre columnas */
       align-items: flex-start;
       justify-content: center; /* Centrar ambas columnas */
     }
@@ -295,6 +296,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center; /* Centrar el enfoque de la imagen */
       display: block;
       transition: transform 0.5s;
     }
@@ -313,7 +315,7 @@
     }
     .service-card {
       background: linear-gradient(135deg, #f7fbfe, #ffffff);
-      padding: 2rem;
+      padding: 1.8rem;
       border-radius: 12px;
       text-align: center;
       box-shadow: 0 5px 15px rgba(0,0,0,0.08);
@@ -420,7 +422,7 @@
     /* ------------------------------------------- */
     .obras-section {
       background: white;
-      padding: 3rem;
+      padding: 2.5rem;
       border-radius: 15px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.08);
       margin: 3rem 0;
@@ -430,7 +432,7 @@
       text-align: center;
       color: #005792;
       margin-bottom: 1.8rem;
-      font-size: 2.2rem;
+      font-size: 2rem;
       position: relative;
       padding-bottom: 15px;
     }
@@ -448,7 +450,7 @@
     
     .cobertura-text {
       text-align: center;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       margin-bottom: 2rem;
       color: #003459;
       font-weight: bold;
@@ -460,15 +462,15 @@
     
     .obras-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.8rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
       margin-top: 1.5rem;
     }
     
     .obra-card {
       background: linear-gradient(135deg, #e6f4ff, #f7fbff);
       border-radius: 12px;
-      padding: 1.8rem 1.5rem;
+      padding: 1.5rem 1.2rem;
       text-align: center;
       box-shadow: 0 5px 15px rgba(0,0,0,0.08);
       transition: all 0.4s ease;
@@ -493,9 +495,9 @@
     }
     
     .obra-card i {
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       color: #00bbf0;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
       transition: transform 0.3s;
     }
     .obra-card:hover i {
@@ -504,7 +506,7 @@
     
     .obra-card h3 {
       color: #005792;
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
     }
     
@@ -515,7 +517,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2rem;
+      gap: 1.8rem;
     }
     
     .location-details {
@@ -524,8 +526,8 @@
     }
     .location-details h2 {
       color: #005792;
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
       position: relative;
       display: inline-block;
       padding-bottom: 10px;
@@ -543,7 +545,7 @@
     }
     
     .location-details p {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       margin: 0.5rem 0;
       color: #333;
       display: flex;
@@ -556,7 +558,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 2rem;
+      gap: 1.8rem;
       width: 100%;
     }
     
@@ -578,6 +580,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center; /* Centrar el enfoque de la imagen */
       display: block;
       transition: transform 0.5s;
     }
@@ -589,12 +592,12 @@
     /* 14. ESTILOS PARA MAPA DE UBICACIÓN          */
     /* ------------------------------------------- */
     .map-container {
-      margin-top: 2.5rem;
+      margin-top: 2rem;
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       max-width: 700px;
-      margin: 2.5rem auto 0;
+      margin: 2rem auto 0;
       border: 1px solid #e0f0ff;
       position: relative;
     }
@@ -619,18 +622,20 @@
     /* Media query para ajustar en móviles */
     @media (max-width: 768px) {
       .obras-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.2rem;
       }
       
       .location-images {
         flex-direction: column;
         align-items: center;
+        gap: 1.5rem;
       }
       
       .location-img-container, .ecografia-img-container {
         width: 100%;
         max-width: 500px;
-        height: 300px;
+        height: 250px; /* Altura reducida para mejor visualización */
       }
       
       .ecografia-content {
@@ -638,33 +643,122 @@
       }
       
       .info-section {
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+      }
+      
+      .obras-section {
         padding: 1.8rem;
+      }
+      
+      .service-card {
+        padding: 1.5rem;
+      }
+      
+      .container {
+        padding: 1.5rem;
+      }
+      
+      .hero {
+        padding: 2.5rem 1rem;
+      }
+      
+      .map-container {
+        margin-top: 1.5rem;
+      }
+      
+      nav ul {
+        gap: 0.8rem;
+      }
+      
+      nav a {
+        padding: 6px 12px;
+        font-size: 0.9rem;
       }
     }
     
     @media (max-width: 480px) {
       .hero {
-        padding: 2.5rem 1rem;
+        padding: 2rem 1rem;
       }
       .hero h2 {
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
       .hero p {
+        font-size: 1.05rem;
+      }
+      
+      .location-details h2 {
+        font-size: 1.6rem;
+      }
+      
+      .obras-title {
+        font-size: 1.8rem;
+      }
+      
+      .cobertura-text {
         font-size: 1.1rem;
       }
-      nav ul {
-        gap: 1rem;
-      }
-      nav a {
-        padding: 6px 12px;
-        font-size: 0.9rem;
-      }
+      
       .services-grid {
         grid-template-columns: 1fr;
+        gap: 1.2rem;
       }
+      
       .whatsapp-button, .instagram-button {
-        padding: 1rem 1.8rem;
-        font-size: 1.1rem;
+        padding: 1rem 1.5rem;
+        font-size: 1.05rem;
+        width: 100%;
+        max-width: 320px;
+      }
+      
+      .obras-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1rem;
+      }
+      
+      .obra-card {
+        padding: 1.2rem 0.8rem;
+      }
+      
+      .obra-card i {
+        font-size: 2rem;
+      }
+      
+      .obra-card h3 {
+        font-size: 1rem;
+      }
+      
+      .ecografia-list ul li {
+        font-size: 1rem;
+      }
+      
+      .ecografia-text p {
+        font-size: 1rem;
+      }
+      
+      .location-img-container, .ecografia-img-container {
+        height: 220px; /* Más bajo en móviles pequeños */
+      }
+      
+      .map-container iframe {
+        height: 280px;
+      }
+      
+      header {
+        padding: 1.2rem;
+      }
+      
+      header img {
+        max-width: 150px;
+      }
+      
+      header h1 {
+        font-size: 1.5rem;
+      }
+      
+      footer p {
+        font-size: 1rem;
       }
     }
     
