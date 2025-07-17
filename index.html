@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultorio Médico Diagnosticars</title>
+  
+  <!-- Fuente refinada (Merriweather) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- Animate.css para animaciones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+  <style>
+    /* ------------------------------------------- */
+    /* 1. RESET Y TIPOGRAFÍA                      */
+    /* ------------------------------------------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      scroll-behavior: smooth;
+      font-family: 'Merriweather', serif; /* Tipografía refinada */
+      background: transparent;
+      position: relative;
+      z-index: 1; /* contenido sobre el video */
+      overflow-x: hidden; /* Evitar scroll horizontal */
+    }
+
+    /* ------------------------------------------- */
+    /* 2. SPLASH SCREEN (Imagen antes de cargar)  */
+    /* ------------------------------------------- */
+    #splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+    #splash img {
+      max-width: 50%;
+      height: auto;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+    #splash.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ------------------------------------------- */
+    /* 3. VIDEO DE FONDO                          */
+    /* ------------------------------------------- */
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;  
+      z-index: -1;       
+    }
+
+    /* ------------------------------------------- */
+    /* 4. ANIMACIONES GLOBALES (fadeInUp)         */
+    /* ------------------------------------------- */
+    .fadeInUp {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1.2s forwards ease-in-out;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ------------------------------------------- */
+    /* 5. ENCABEZADO Y MENÚ                       */
+    /* ------------------------------------------- */
+    header {
+      background-color: #005792;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(0,87,146,0.9), rgba(0,59,92,0.8));
+      z-index: -1;
+    }
+    header img {
+      max-width: 180px;
+      height: auto;
+      margin-bottom: 1rem;
+      border: 3px solid #fff;
+      border-radius: 10px;
+      transition: transform 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    header img:hover {
+      transform: scale(1.05) rotate(2deg);
+    }
+
+    nav {
+      background-color: #003459;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      padding: 8px 16px;
+      border-radius: 30px;
+    }
+    nav a:hover {
+      color: #00bbf0;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* ------------------------------------------- */
+    /* 6. CONTENEDOR PRINCIPAL Y HERO             */
+    /* ------------------------------------------- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(0,87,146,0.85), rgba(0,59,92,0.85)),
+                  url('https://images.unsplash.com/photo-1584432810601-6c7f27d2362b');
+      background-size: cover;
+      color: white;
+      text-align: center;
+      padding: 4rem 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      animation: fadeInHero 1.5s forwards ease-in-out;
+      opacity: 0; /* Arranca transparente para animación */
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    @keyframes fadeInHero {
+      to {
+        opacity: 1;
+      }
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .hero p {
+      font-size: 1.3rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ------------------------------------------- */
+    /* 7. SECCIONES DE INFORMACIÓN (GENÉRICAS)     */
+    /* ------------------------------------------- */
+    .info-section {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      margin: 2.5rem 0;
+      text-align: center;
+      border: 1px solid #eaeaea;
+    }
+    .info-section img {
+      border-radius: 10px;
+      border: 2px solid #e0f0ff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .info-section img:hover {
+      transform: scale(1.02);
+    }
+
+    /* ------------------------------------------- */
+    /* 8. SECCIÓN DE ECOGRAFÍAS REORGANIZADA       */
+    /* ------------------------------------------- */
+    .ecografia-section .ecografia-content {
+      display: flex;
+      flex-wrap: wrap; /* Se adaptará en pantallas pequeñas */
+      gap: 2.5rem;       /* Espacio entre columnas */
+      align-items: flex-start;
+      justify-content: center; /* Centrar ambas columnas */
+    }
+    /* Columna de texto */
+    .ecografia-text {
+      flex: 1;
+      min-width: 300px;
+      text-align: left;
+    }
+    .ecografia-text h2 {
+      text-align: center; /* Título centrado para un look equilibrado */
+    }
+    .ecografia-text p {
+      margin-top: 1rem;
+      line-height: 1.7;
+      color: #333;
+    }
+    /* Lista de ecografías */
+    .ecografia-list {
+      margin-top: 1.8rem;
+      display: inline-block;
+    }
+    .ecografia-list h3 {
+      margin-bottom: 0.8rem;
+      color: #005792;
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+    .ecografia-list ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .ecografia-list ul li {
+      margin-bottom: 0.7rem;
+      padding-left: 1.8rem;
+      position: relative;
+      font-size: 1.1rem;
+    }
+    .ecografia-list ul li::before {
+      content: "•";
+      color: #00bbf0;
+      font-size: 1.5rem;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+
+    /* Columna de imágenes */
+    .ecografia-images {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center; /* Centra las imágenes verticalmente */
+    }
+    /* Ajuste de imágenes: mayor ancho/alto y un "object-fit" */
+    .ecografia-img-container {
+      width: 400px;
+      height: 300px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+    .ecografia-img-container:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    }
+    .ecografia-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s;
+    }
+    .ecografia-img-container:hover .ecografia-img {
+      transform: scale(1.05);
+    }
+
+    /* ------------------------------------------- */
+    /* 9. SERVICIOS (grid con animación)           */
+    /* ------------------------------------------- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1.8rem;
+    }
+    .service-card {
+      background: linear-gradient(135deg, #f7fbfe, #ffffff);
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      animation: fadeInUp 1s forwards ease-in-out;
+      opacity: 0;
+      border: 1px solid #e0f0ff;
+      transition: all 0.3s ease;
+    }
+    .service-card:hover {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transform: translateY(-10px);
+      background: linear-gradient(135deg, #e6f4ff, #ffffff);
+    }
+    .service-card i {
+      font-size: 2.5rem;
+      color: #00bbf0;
+      margin-bottom: 1.2rem;
+      background: #e6f4ff;
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+      border-radius: 50%;
+      text-align: center;
+      margin: 0 auto 1.5rem;
+    }
+    .service-card h3 {
+      color: #005792;
+      font-size: 1.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .service-card p {
+      color: #555;
+      font-size: 1.1rem;
+    }
+
+    /* ------------------------------------------- */
+    /* 10. BOTONES DE REDES / CONTACTO            */
+    /* ------------------------------------------- */
+    .buttons-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .whatsapp-button, .instagram-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: white;
+      padding: 1.2rem 2.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .whatsapp-button {
+      background: linear-gradient(135deg, #25d366, #1da851);
+    }
+    .whatsapp-button:hover {
+      background: linear-gradient(135deg, #1da851, #25d366);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(29, 168, 81, 0.3);
+    }
+    .instagram-button {
+      background: linear-gradient(135deg, #E1306C, #C13584);
+    }
+    .instagram-button:hover {
+      background: linear-gradient(135deg, #C13584, #E1306C);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(193, 53, 132, 0.3);
+    }
+
+    /* ------------------------------------------- */
+    /* 11. PIE DE PÁGINA                          */
+    /* ------------------------------------------- */
+    footer {
+      background: linear-gradient(135deg, #002b4e, #003459);
+      color: white;
+      text-align: center;
+      padding: 3rem 2rem;
+      margin-top: 4rem;
+      position: relative;
+    }
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #00bbf0, #25d366);
+    }
+    footer p {
+      margin: 0.8rem 0;
+      font-size: 1.1rem;
+    }
+    
+    /* ------------------------------------------- */
+    /* 12. NUEVA SECCIÓN DE OBRAS SOCIALES         */
+    /* ------------------------------------------- */
+    .obras-section {
+      background: white;
+      padding: 3rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      margin: 3rem 0;
+    }
+    
+    .obras-title {
+      text-align: center;
+      color: #005792;
+      margin-bottom: 1.8rem;
+      font-size: 2.2rem;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    .obras-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, #00bbf0, #005792);
+      border-radius: 2px;
+    }
+    
+    .cobertura-text {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      color: #003459;
+      font-weight: bold;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    
+    .obras-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1.5rem;
+    }
+    
+    .obra-card {
+      background: linear-gradient(135deg, #e6f4ff, #f7fbff);
+      border-radius: 12px;
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      transition: all 0.4s ease;
+      border: 1px solid #d1ebff;
+      position: relative;
+      overflow: hidden;
+    }
+    .obra-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #00bbf0, #005792);
+    }
+    
+    .obra-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      background: linear-gradient(135deg, #d1ebff, #e6f4ff);
+    }
+    
+    .obra-card i {
+      font-size: 2.8rem;
+      color: #00bbf0;
+      margin-bottom: 1.2rem;
+      transition: transform 0.3s;
+    }
+    .obra-card:hover i {
+      transform: scale(1.1);
+    }
+    
+    .obra-card h3 {
+      color: #005792;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    
+    /* ------------------------------------------- */
+    /* 13. UBICACIÓN CON IMÁGENES                  */
+    /* ------------------------------------------- */
+    .location-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    .location-details {
+      text-align: center;
+      width: 100%;
+    }
+    .location-details h2 {
+      color: #005792;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 10px;
+    }
+    .location-details h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #00bbf0, #005792);
+      border-radius: 2px;
+    }
+    
+    .location-details p {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .location-images {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      width: 100%;
+    }
+    
+    .location-img-container {
+      width: 380px;
+      height: 280px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: all 0.4s ease;
+      position: relative;
+    }
+    .location-img-container:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+    
+    .location-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s;
+    }
+    .location-img-container:hover .location-img {
+      transform: scale(1.05);
+    }
+    
+    /* ------------------------------------------- */
+    /* 14. ESTILOS PARA MAPA DE UBICACIÓN          */
+    /* ------------------------------------------- */
+    .map-container {
+      margin-top: 2.5rem;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      max-width: 700px;
+      margin: 2.5rem auto 0;
+      border: 1px solid #e0f0ff;
+      position: relative;
+    }
+    .map-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #00bbf0, #25d366);
+      z-index: 1;
+    }
+    
+    .map-container iframe {
+      width: 100%;
+      height: 350px;
+      border: 0;
+      display: block;
+    }
+    
+    /* Media query para ajustar en móviles */
+    @media (max-width: 768px) {
+      .obras-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      
+      .location-images {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .location-img-container, .ecografia-img-container {
+        width: 100%;
+        max-width: 500px;
+        height: 300px;
+      }
+      
+      .ecografia-content {
+        flex-direction: column;
+      }
+      
+      .info-section {
+        padding: 1.8rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero {
+        padding: 2.5rem 1rem;
+      }
+      .hero h2 {
+        font-size: 2rem;
+      }
+      .hero p {
+        font-size: 1.1rem;
+      }
+      nav ul {
+        gap: 1rem;
+      }
+      nav a {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .whatsapp-button, .instagram-button {
+        padding: 1rem 1.8rem;
+        font-size: 1.1rem;
+      }
+    }
+    
+    /* ------------------------------------------- */
+    /* 15. ESTILOS ADICIONALES                     */
+    /* ------------------------------------------- */
+    .section-divider {
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, #00bbf0, #005792);
+      margin: 2rem auto;
+      border-radius: 2px;
+    }
+    
+    .highlight-text {
+      color: #00bbf0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. SPLASH SCREEN con imagen grande -->
+  <div id="splash">
+    <img src="https://i.imgur.com/vzbuaF6.jpg" alt="Splash Image">
+  </div>
+
+  <!-- 2. VIDEO DE FONDO -->
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="https://cdn.pixabay.com/video/2020/09/13/49815-458438877_large.mp4" type="video/mp4">
+    Tu navegador no soporta la etiqueta de video HTML5.
+  </video>
+
+  <!-- 3. Encabezado con logo -->
+  <header class="fadeInUp">
+    <img src="https://i.imgur.com/vzbuaF6.jpg" alt="DI-ARS">
+    <h1>Consultorio Médico Diagnosticars</h1>
+    <p>Especialista en diagnostico por imagenes</p>
+  </header>
+
+  <!-- 4. Menú de navegación -->
+  <nav class="fadeInUp">
+    <ul>
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#obras-sociales">Obras Sociales</a></li>
+      <li><a href="#ecografias">Ecografías</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- 5. Sección hero -->
+  <div class="hero">
+    <h2>Tu salud es nuestra prioridad</h2>
+    <p>Agenda tu cita de manera rápida y sencilla</p>
+  </div>
+
+  <!-- 6. Contenedor principal -->
+  <div class="container fadeInUp">
+    <!-- Ubicación con imágenes -->
+    <section class="info-section" id="inicio">
+      <div class="location-container">
+        <div class="location-details">
+          <h2>Ubicación</h2>
+          <p><i class="fas fa-map-marker-alt"></i> Av Maipú 1814 - Local 7</p>
+          <p><i class="fas fa-city"></i> Vicente López, Buenos Aires</p>
+        </div>
+        
+        <div class="location-images">
+          <div class="location-img-container">
+            <img class="location-img" 
+                 src="https://i.imgur.com/cY2xdUR.jpeg" 
+                 alt="Fachada del consultorio">
+          </div>
+          <div class="location-img-container">
+            <img class="location-img" 
+                 src="https://i.imgur.com/eDMf90s.jpeg" 
+                 alt="Sala de espera">
+          </div>
+        </div>
+        
+        <div class="map-container">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3287.094888421883!2d-58.47685732357624!3d-34.52768885464865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb0f1d0a1400f%3A0x3b8e3d9b2a5e3b0f!2sAv.%20Maip%C3%BA%201814%2C%20B1636FDA%20Olivos%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1691100000000!5m2!1ses!2sar" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Nueva sección de Obras Sociales -->
+    <section class="obras-section fadeInUp" id="obras-sociales">
+      <h2 class="obras-title">OBRAS SOCIALES</h2>
+      <p class="cobertura-text">Cobertura 100% sin copagos para:</p>
+      
+      <div class="obras-grid">
+        <div class="obra-card">
+          <i class="fas fa-heartbeat"></i>
+          <h3>IOMA</h3>
+        </div>
+        <div class="obra-card">
+          <i class="fas fa-balance-scale"></i>
+          <h3>PODER JUDICIAL</h3>
+        </div>
+        <div class="obra-card">
+          <i class="fas fa-home"></i>
+          <h3>CASA BAYRES</h3>
+        </div>
+        <div class="obra-card">
+          <i class="fas fa-user-md"></i>
+          <h3>FEMEBA</h3>
+        </div>
+        <div class="obra-card">
+          <i class="fas fa-stethoscope"></i>
+          <h3>COMEI</h3>
+        </div>
+        <div class="obra-card">
+          <i class="fas fa-pills"></i>
+          <h3>AMFFA</h3>
+        </div>
+        <div class="obra-card">
+          <i class="fas fa-hospital"></i>
+          <h3>CASA</h3>
+        </div>
+        <div class="obra-card">
+          <i class="fas fa-music"></i>
+          <h3>SADAIC</h3>
+        </div>
+        <div class="obra-card">
+          <i class="fas fa-users"></i>
+          <h3>OPDEA</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ecografías (reorganizada) -->
+    <section class="info-section ecografia-section fadeInUp" id="ecografias">
+      <div class="ecografia-content">
+        <!-- Columna de Texto -->
+        <div class="ecografia-text">
+          <h2>Ecografías</h2>
+          <p>
+            Contamos con tecnología de última generación y un equipo médico altamente capacitado para brindarte diagnósticos precisos y confiables.
+          </p>
+          <div class="ecografia-list">
+            <h3>Tipos de Ecografías que Realizamos</h3>
+            <ul>
+              <li>Ecografía Abdominal</li>
+              <li>Ecografía Hepato-Bilio-Pancreática</li>
+              <li>Ecografía de Aorta Abdominal</li>
+              <li>Ecografía Renal</li>
+              <li>Ecografía Vesical</li>
+              <li>Ecografía Prostática</li>
+              <li>Ecografía Obstétrica (primer trimestre)</li>
+              <li>Ecografía Ginecológica</li>
+            </ul>
+          </div>
+          <p style="margin-top: 1.8rem; font-style: italic;">
+            Ante cualquier duda o inquietud, te invitamos a consultarnos. Nuestro equipo estará encantado de orientarte y resolver tus preguntas.
+          </p>
+        </div>
+
+        <!-- Columna de Imágenes -->
+        <div class="ecografia-images">
+          <div class="ecografia-img-container">
+            <img class="ecografia-img" 
+                 src="https://i.imgur.com/N50rW8B.jpg" 
+                 alt="Ecografía 1">
+          </div>
+          <div class="ecografia-img-container">
+            <img class="ecografia-img" 
+                 src="https://i.imgur.com/mDwV6KC.jpg" 
+                 alt="Ecografía 2">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Servicios -->
+    <section class="info-section fadeInUp" id="servicios">
+      <h2>Nuestros Servicios</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <i class="fas fa-file-prescription"></i>
+          <h3>Recetas Médicas</h3>
+          <p>Gestión y renovación de medicaciones.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-running"></i>
+          <h3>Aptos Físicos</h3>
+          <p>Certificados y evaluaciones deportivas.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-percentage"></i>
+          <h3>Descuentos</h3>
+          <p>50% de descuento para jubilados.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Turnos y Redes -->
+    <section class="info-section fadeInUp">
+      <h2>Turnos y Redes</h2>
+      <div class="buttons-container">
+        <a class="whatsapp-button" 
+           href="https://wa.me/5491171340876?text=Hola%20buenas%21%20quiero%20agendar%20un%20turno%20en%20Diagnosticars%20para%20hacer..." 
+           target="_blank">
+          <i class="fab fa-whatsapp"></i>
+          Sacar Turno por WhatsApp
+        </a>
+        <a class="instagram-button" 
+           href="https://www.instagram.com/diagnosticoars/" 
+           target="_blank">
+          <i class="fab fa-instagram"></i>
+          Síguenos en Instagram
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- Pie de página -->
+  <footer class="fadeInUp" id="contacto">
+    <p><i class="fas fa-envelope"></i> Contacto: consultorio@diagnosticars.com</p>
+    <p><i class="fas fa-phone"></i> Tel: +54 9 11 7134-0876</p>
+    <p><i class="fas fa-clock"></i> Horario de atención: Lunes a Viernes de 8:00 a 20:00 hs</p>
+    <div class="section-divider"></div>
+    <p>© 2023 Diagnosticars. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- SCRIPT para ocultar el splash cuando cargue todo -->
+  <script>
+    window.addEventListener('load', function() {
+      const splash = document.getElementById('splash');
+      setTimeout(() => {
+        splash.classList.add('hidden');
+      }, 800); 
+    });
+  </script>
+
+</body>
+</html>
